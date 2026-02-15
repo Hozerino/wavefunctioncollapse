@@ -1,0 +1,362 @@
+[gd_scene format=3 uid="uid://cchbrpo3ipsgq"]
+
+[ext_resource type="Script" uid="uid://x7ahw3b0lw8y" path="res://src/playground.gd" id="1_rupst"]
+
+[node name="Playground" type="Control" unique_id=1005479856]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_rupst")
+x_size = 15
+y_size = 15
+
+[node name="OutputVisualGrid" type="GridContainer" parent="." unique_id=1381221631]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -338.0
+offset_top = -52.0
+offset_right = -142.0
+offset_bottom = 52.0
+grow_horizontal = 0
+grow_vertical = 2
+columns = 10
+
+[node name="Label" type="Label" parent="OutputVisualGrid" unique_id=613604879]
+layout_mode = 2
+text = "W"
+
+[node name="Label2" type="Label" parent="OutputVisualGrid" unique_id=1744821964]
+layout_mode = 2
+text = "W"
+
+[node name="Label3" type="Label" parent="OutputVisualGrid" unique_id=1228103646]
+layout_mode = 2
+text = "W"
+
+[node name="Label4" type="Label" parent="OutputVisualGrid" unique_id=1437799350]
+layout_mode = 2
+text = "W"
+
+[node name="Label5" type="Label" parent="OutputVisualGrid" unique_id=992455842]
+layout_mode = 2
+text = "W"
+
+[node name="Label6" type="Label" parent="OutputVisualGrid" unique_id=1220614013]
+layout_mode = 2
+text = "W"
+
+[node name="Label7" type="Label" parent="OutputVisualGrid" unique_id=1850400565]
+layout_mode = 2
+text = "W"
+
+[node name="Label8" type="Label" parent="OutputVisualGrid" unique_id=1701546220]
+layout_mode = 2
+text = "W"
+
+[node name="Label9" type="Label" parent="OutputVisualGrid" unique_id=807096164]
+layout_mode = 2
+text = "W"
+
+[node name="Label10" type="Label" parent="OutputVisualGrid" unique_id=936339103]
+layout_mode = 2
+text = "W"
+
+[node name="Label11" type="Label" parent="OutputVisualGrid" unique_id=1352629791]
+layout_mode = 2
+text = "W"
+
+[node name="Label12" type="Label" parent="OutputVisualGrid" unique_id=2079220010]
+layout_mode = 2
+text = "W"
+
+[node name="Label13" type="Label" parent="OutputVisualGrid" unique_id=383339211]
+layout_mode = 2
+text = "W"
+
+[node name="Label14" type="Label" parent="OutputVisualGrid" unique_id=1230939393]
+layout_mode = 2
+text = "W"
+
+[node name="Label15" type="Label" parent="OutputVisualGrid" unique_id=722166047]
+layout_mode = 2
+text = "W"
+
+[node name="Label16" type="Label" parent="OutputVisualGrid" unique_id=126322329]
+layout_mode = 2
+text = "W"
+
+[node name="Label17" type="Label" parent="OutputVisualGrid" unique_id=722610755]
+layout_mode = 2
+text = "W"
+
+[node name="Label18" type="Label" parent="OutputVisualGrid" unique_id=2129036101]
+layout_mode = 2
+text = "W"
+
+[node name="Label19" type="Label" parent="OutputVisualGrid" unique_id=325076903]
+layout_mode = 2
+text = "W"
+
+[node name="Label20" type="Label" parent="OutputVisualGrid" unique_id=944926541]
+layout_mode = 2
+text = "W"
+
+[node name="Label21" type="Label" parent="OutputVisualGrid" unique_id=1142158090]
+layout_mode = 2
+text = "W"
+
+[node name="Label22" type="Label" parent="OutputVisualGrid" unique_id=1055461741]
+layout_mode = 2
+text = "W"
+
+[node name="Label23" type="Label" parent="OutputVisualGrid" unique_id=646645408]
+layout_mode = 2
+text = "W"
+
+[node name="Label24" type="Label" parent="OutputVisualGrid" unique_id=789376850]
+layout_mode = 2
+text = "W"
+
+[node name="Label25" type="Label" parent="OutputVisualGrid" unique_id=1675911446]
+layout_mode = 2
+text = "W"
+
+[node name="Label26" type="Label" parent="OutputVisualGrid" unique_id=122980672]
+layout_mode = 2
+text = "W"
+
+[node name="Label27" type="Label" parent="OutputVisualGrid" unique_id=444801301]
+layout_mode = 2
+text = "W"
+
+[node name="Label28" type="Label" parent="OutputVisualGrid" unique_id=304317233]
+layout_mode = 2
+text = "W"
+
+[node name="Label29" type="Label" parent="OutputVisualGrid" unique_id=1607593915]
+layout_mode = 2
+text = "W"
+
+[node name="Label30" type="Label" parent="OutputVisualGrid" unique_id=1513927511]
+layout_mode = 2
+text = "W"
+
+[node name="Label31" type="Label" parent="OutputVisualGrid" unique_id=1030374803]
+layout_mode = 2
+text = "W"
+
+[node name="Label32" type="Label" parent="OutputVisualGrid" unique_id=1589325823]
+layout_mode = 2
+text = "W"
+
+[node name="Label33" type="Label" parent="OutputVisualGrid" unique_id=1945164366]
+layout_mode = 2
+text = "W"
+
+[node name="Label34" type="Label" parent="OutputVisualGrid" unique_id=49811968]
+layout_mode = 2
+text = "W"
+
+[node name="Label35" type="Label" parent="OutputVisualGrid" unique_id=1631412172]
+layout_mode = 2
+text = "W"
+
+[node name="Label36" type="Label" parent="OutputVisualGrid" unique_id=313186767]
+layout_mode = 2
+text = "W"
+
+[node name="Label37" type="Label" parent="OutputVisualGrid" unique_id=843601412]
+layout_mode = 2
+text = "W"
+
+[node name="Label38" type="Label" parent="OutputVisualGrid" unique_id=247414414]
+layout_mode = 2
+text = "W"
+
+[node name="Label39" type="Label" parent="OutputVisualGrid" unique_id=341772196]
+layout_mode = 2
+text = "W"
+
+[node name="Label40" type="Label" parent="OutputVisualGrid" unique_id=1006316072]
+layout_mode = 2
+text = "W"
+
+[node name="InputVisualGrid" type="GridContainer" parent="." unique_id=1046438161]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -52.0
+offset_right = 196.0
+offset_bottom = 52.0
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+columns = 10
+
+[node name="Label" type="Label" parent="InputVisualGrid" unique_id=442278735]
+layout_mode = 2
+text = "W"
+
+[node name="Label2" type="Label" parent="InputVisualGrid" unique_id=1841324438]
+layout_mode = 2
+text = "W"
+
+[node name="Label3" type="Label" parent="InputVisualGrid" unique_id=1332090617]
+layout_mode = 2
+text = "W"
+
+[node name="Label4" type="Label" parent="InputVisualGrid" unique_id=1630404494]
+layout_mode = 2
+text = "W"
+
+[node name="Label5" type="Label" parent="InputVisualGrid" unique_id=498343501]
+layout_mode = 2
+text = "W"
+
+[node name="Label6" type="Label" parent="InputVisualGrid" unique_id=1285705543]
+layout_mode = 2
+text = "W"
+
+[node name="Label7" type="Label" parent="InputVisualGrid" unique_id=1398998770]
+layout_mode = 2
+text = "W"
+
+[node name="Label8" type="Label" parent="InputVisualGrid" unique_id=1504546966]
+layout_mode = 2
+text = "W"
+
+[node name="Label9" type="Label" parent="InputVisualGrid" unique_id=745015947]
+layout_mode = 2
+text = "W"
+
+[node name="Label10" type="Label" parent="InputVisualGrid" unique_id=2132987892]
+layout_mode = 2
+text = "W"
+
+[node name="Label11" type="Label" parent="InputVisualGrid" unique_id=90030265]
+layout_mode = 2
+text = "W"
+
+[node name="Label12" type="Label" parent="InputVisualGrid" unique_id=1525569991]
+layout_mode = 2
+text = "W"
+
+[node name="Label13" type="Label" parent="InputVisualGrid" unique_id=1707554500]
+layout_mode = 2
+text = "W"
+
+[node name="Label14" type="Label" parent="InputVisualGrid" unique_id=2054133352]
+layout_mode = 2
+text = "W"
+
+[node name="Label15" type="Label" parent="InputVisualGrid" unique_id=1537268438]
+layout_mode = 2
+text = "W"
+
+[node name="Label16" type="Label" parent="InputVisualGrid" unique_id=324896429]
+layout_mode = 2
+text = "W"
+
+[node name="Label17" type="Label" parent="InputVisualGrid" unique_id=896405582]
+layout_mode = 2
+text = "W"
+
+[node name="Label18" type="Label" parent="InputVisualGrid" unique_id=1860417534]
+layout_mode = 2
+text = "W"
+
+[node name="Label19" type="Label" parent="InputVisualGrid" unique_id=2017798950]
+layout_mode = 2
+text = "W"
+
+[node name="Label20" type="Label" parent="InputVisualGrid" unique_id=1910655439]
+layout_mode = 2
+text = "W"
+
+[node name="Label21" type="Label" parent="InputVisualGrid" unique_id=287184772]
+layout_mode = 2
+text = "W"
+
+[node name="Label22" type="Label" parent="InputVisualGrid" unique_id=1684140430]
+layout_mode = 2
+text = "W"
+
+[node name="Label23" type="Label" parent="InputVisualGrid" unique_id=27326573]
+layout_mode = 2
+text = "W"
+
+[node name="Label24" type="Label" parent="InputVisualGrid" unique_id=1453681839]
+layout_mode = 2
+text = "W"
+
+[node name="Label25" type="Label" parent="InputVisualGrid" unique_id=1044699014]
+layout_mode = 2
+text = "W"
+
+[node name="Label26" type="Label" parent="InputVisualGrid" unique_id=27260633]
+layout_mode = 2
+text = "W"
+
+[node name="Label27" type="Label" parent="InputVisualGrid" unique_id=725185483]
+layout_mode = 2
+text = "W"
+
+[node name="Label28" type="Label" parent="InputVisualGrid" unique_id=73366387]
+layout_mode = 2
+text = "W"
+
+[node name="Label29" type="Label" parent="InputVisualGrid" unique_id=1275849790]
+layout_mode = 2
+text = "W"
+
+[node name="Label30" type="Label" parent="InputVisualGrid" unique_id=666627720]
+layout_mode = 2
+text = "W"
+
+[node name="Label31" type="Label" parent="InputVisualGrid" unique_id=485572361]
+layout_mode = 2
+text = "W"
+
+[node name="Label32" type="Label" parent="InputVisualGrid" unique_id=318125875]
+layout_mode = 2
+text = "W"
+
+[node name="Label33" type="Label" parent="InputVisualGrid" unique_id=120493574]
+layout_mode = 2
+text = "W"
+
+[node name="Label34" type="Label" parent="InputVisualGrid" unique_id=1181712875]
+layout_mode = 2
+text = "W"
+
+[node name="Label35" type="Label" parent="InputVisualGrid" unique_id=246441064]
+layout_mode = 2
+text = "W"
+
+[node name="Label36" type="Label" parent="InputVisualGrid" unique_id=55848900]
+layout_mode = 2
+text = "W"
+
+[node name="Label37" type="Label" parent="InputVisualGrid" unique_id=1934855495]
+layout_mode = 2
+text = "W"
+
+[node name="Label38" type="Label" parent="InputVisualGrid" unique_id=558507230]
+layout_mode = 2
+text = "W"
+
+[node name="Label39" type="Label" parent="InputVisualGrid" unique_id=1643124569]
+layout_mode = 2
+text = "W"
+
+[node name="Label40" type="Label" parent="InputVisualGrid" unique_id=1214208060]
+layout_mode = 2
+text = "W"

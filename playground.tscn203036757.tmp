@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cchbrpo3ipsgq"]
+
+[ext_resource type="Script" uid="uid://x7ahw3b0lw8y" path="res://src/playground.gd" id="1_rupst"]
+
+[node name="Playground" type="Node2D" unique_id=907877062]
+script = ExtResource("1_rupst")
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=1381221631]
+offset_right = 40.0
+offset_bottom = 40.0
