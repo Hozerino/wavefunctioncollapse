@@ -34,9 +34,22 @@ func run_iteration() -> bool:
 	if not initialized:
 		initialize_grid()
 	var tiles = _get_lowest_entropy_tiles(1)
-	var lowest_entropy_tile :WaveTile = tiles.pick_random()
-	lowest_entropy_tile.collapse()
-	update_tiles_after_collapse(lowest_entropy_tile)
+	var lowest_entropy_tile : WaveTile = tiles.pick_random()
+
+	# Copy possibilities so we can retry
+	var original_types = lowest_entropy_tile._available_types.duplicate()
+
+	while original_types.size() > 0:
+		var chosen = original_types.pick_random()
+		original_types.erase(chosen)
+
+		lowest_entropy_tile.update_available_tiles_and_entropy([chosen])
+		lowest_entropy_tile.entropy = 0
+
+		return update_tiles_after_collapse(lowest_entropy_tile)
+
+	# If we reach here → all choices failed
+	assert(false, "Hard contradiction at (%d, %d)" % [lowest_entropy_tile.x, lowest_entropy_tile.y])
 	return false
 
 func run_to_the_end():
@@ -89,45 +102,46 @@ func _get_lowest_entropy_tile() -> WaveTile:
 	return grid[min_pos.y][min_pos.x]
 
 # This is the real WAVE FUNCTION COLLAPSE
-func update_tiles_after_collapse(collapsed_tile: WaveTile):
+func update_tiles_after_collapse(collapsed_tile: WaveTile) -> bool:
 	# Queue for propagation (BFS)
 	var tiles_to_be_updated: Array = [collapsed_tile]
 
 	# Map direction names to vectors
 
 	var dir_offsets = {
-						  "north": Vector2.UP,
-						  "south": Vector2.DOWN,
-						  "west": Vector2.LEFT,
-						  "east": Vector2.RIGHT
-					  }
+		"north": Vector2.UP,
+		"south": Vector2.DOWN,
+		"west": Vector2.LEFT,
+		"east": Vector2.RIGHT
+	}
 
 	while not tiles_to_be_updated.is_empty():
 		var current_tile: WaveTile = tiles_to_be_updated.pop_front()
 		var possible_neighbors: Dictionary = _ruleset_db.get_possible_neighbors(current_tile)
 
-		#		 TODO arrumar esse for, antes o dir_offsets tava como up down leftright e nao entrava aqui, arrumar!!!
 		for dir in possible_neighbors.keys():
 			var offset = dir_offsets.get(dir)
 			if offset == null:
 				push_error("Unknown direction: %s" % dir)
-				continue  # ignore unknown directions
-			# TODO colocar x e y no tile de volta pra ele ajudar a achar os vizinhos
+				continue
+
 			var neighbor_pos = Vector2(current_tile.x, current_tile.y) + offset
 
-			# Bounds check
 			if neighbor_pos.x < 0 or neighbor_pos.x >= _x_size or neighbor_pos.y < 0 or neighbor_pos.y >= _y_size:
 				continue
 
 			var neighbor_tile: WaveTile = grid[neighbor_pos.y][neighbor_pos.x]
 			if neighbor_tile.entropy == 0:
-				continue  # already collapsed
+				continue
 
 			var allowed_types: Array = possible_neighbors[dir]
 			var new_available_types: Array = neighbor_tile._available_types.filter(func(t): return t in allowed_types)
-			assert(not new_available_types.is_empty(), "pois eh... bora lidar com contradictions talvez?")
+			# 🚨 CONTRADICTION DETECTED, returning false
+			if new_available_types.is_empty():
+				return false
 
-			# If the neighbor's possibilities shrank, update it and add to queue
 			if new_available_types.size() < neighbor_tile._available_types.size():
 				neighbor_tile.update_available_tiles_and_entropy(new_available_types)
 				tiles_to_be_updated.append(neighbor_tile)
+
+	return true
