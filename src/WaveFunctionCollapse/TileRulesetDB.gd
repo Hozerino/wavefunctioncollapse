@@ -31,7 +31,6 @@ func get_possible_neighbors(tile: WaveTile) -> Dictionary:
 				return v in candidate_data.get(dir, [])
 			)
 
-	print("Possible neighbors for tile with types %s: %s" % [tile._available_types, result])
 	return result
 
 func put_possible_neighbors(tile_type: String, constraints: Dictionary[String, Array]):

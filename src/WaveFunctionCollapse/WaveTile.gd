@@ -15,7 +15,9 @@ var neighbors: Dictionary[String, WaveTile] = {
 
 func collapse():
 	assert(_available_types.size() > 0, "No available types to collapse to!")
-	var chosen_type = _available_types[randi() % _available_types.size()]
+	var chosen_type = _available_types.pick_random()
+	assert(chosen_type != null, "pick_random returned null, which should not happen if size > 0")
+	print("setting my available types to ", chosen_type)
 	_available_types = [chosen_type]
 	entropy = 0
 

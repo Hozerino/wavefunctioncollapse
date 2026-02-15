@@ -84,12 +84,12 @@ func get_input_matrix(input: String) -> Array:
 		var line = lines[y]
 
 		for x in range(line.length()):
-			var char = line[x]
+			var _char = line[x]
 
-			if char == " ":
+			if _char == " ":
 				continue # ignore accidental indentation
 
-			row.append(char)
+			row.append(_char)
 
 		input_as_matrix.append(row)
 	return input_as_matrix

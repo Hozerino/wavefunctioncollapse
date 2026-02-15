@@ -9,6 +9,7 @@ var _y_size: int
 var grid: Array = []
 
 var initialized = false
+var finished = false
 
 func _init(tile_ruleset_db: TileRulesetDB, x_size, y_size) -> void:
 	_ruleset_db = tile_ruleset_db
@@ -20,34 +21,56 @@ func initialize_grid():
 	for y in range(0, _y_size):
 		var row: Array = []
 		for x in range(0, _x_size):
-			print("inicializando tile x=%d, y=%d" % [x, y])
 			row.append(WaveTile.new(x, y, _ruleset_db.get_all_possible_tiles()))
 		grid.append(row)
 	initialized = true
+	finished = false
 
 func run_iteration() -> bool:
-	if is_finished():
+	check_finished()
+	if finished:
 		print("Generation complete!")
 		return true
 	if not initialized:
 		initialize_grid()
-	var lowest_entropy_tile := _get_lowest_entropy_tile()
+	var tiles = _get_lowest_entropy_tiles(1)
+	var lowest_entropy_tile :WaveTile = tiles.pick_random()
 	lowest_entropy_tile.collapse()
 	update_tiles_after_collapse(lowest_entropy_tile)
 	return false
 
 func run_to_the_end():
-	while not is_finished():
+	while not finished:
 		run_iteration()
 
-func is_finished() -> bool:
+func check_finished():
 	for y in range(0, _y_size):
 		for x in range(0, _x_size):
-			if not grid[y][x].entropy == 0:
-				return false
-	return true
+			var tile = grid[y][x]
+			if tile._available_types.size() != 1:
+				finished = false
+				return
+	finished = true
 
-# TODO tambem posso pegar uma lista dos N com menor entropia e escolher um igual
+func _get_lowest_entropy_tiles(N: int) -> Array:
+	var lowest_entropy_tiles := []
+	var entropy_list := {}
+
+	for y in range(0, _y_size):
+		for x in range(0, _x_size):
+			var tile: WaveTile = grid[y][x]
+			if tile.entropy == 0:
+				continue
+			var entropy: int = tile._available_types.size()
+			entropy_list[Vector2(x, y)] = entropy
+
+	# pegando as menores entropias
+	var sorted_keys = entropy_list.keys().duplicate()
+	sorted_keys.sort_custom(func(a, b): return entropy_list[a] < entropy_list[b])
+	for i in range(min(N, sorted_keys.size())):
+		lowest_entropy_tiles.append(grid[sorted_keys[i].y][sorted_keys[i].x])
+	return lowest_entropy_tiles
+
 func _get_lowest_entropy_tile() -> WaveTile:
 	var min_entropy: int = _ruleset_db.get_all_possible_tiles().size() + 1
 	var min_pos: Vector2
@@ -56,7 +79,6 @@ func _get_lowest_entropy_tile() -> WaveTile:
 		for x in range(0, _x_size):
 			var tile: WaveTile = grid[y][x]
 			if tile.entropy == 0:
-				print("pulando tile com entro zero")
 				continue
 			var entropy: int = tile._available_types.size()
 			if entropy < min_entropy:
@@ -74,17 +96,17 @@ func update_tiles_after_collapse(collapsed_tile: WaveTile):
 	# Map direction names to vectors
 
 	var dir_offsets = {
-		  "north": Vector2.UP,
-		  "south": Vector2.DOWN,
-		  "west": Vector2.LEFT,
-		  "east": Vector2.RIGHT
-	  }
+						  "north": Vector2.UP,
+						  "south": Vector2.DOWN,
+						  "west": Vector2.LEFT,
+						  "east": Vector2.RIGHT
+					  }
 
 	while not tiles_to_be_updated.is_empty():
 		var current_tile: WaveTile = tiles_to_be_updated.pop_front()
 		var possible_neighbors: Dictionary = _ruleset_db.get_possible_neighbors(current_tile)
 
-#		 TODO arrumar esse for, antes o dir_offsets tava como up down leftright e nao entrava aqui, arrumar!!!
+		#		 TODO arrumar esse for, antes o dir_offsets tava como up down leftright e nao entrava aqui, arrumar!!!
 		for dir in possible_neighbors.keys():
 			var offset = dir_offsets.get(dir)
 			if offset == null:
@@ -103,6 +125,7 @@ func update_tiles_after_collapse(collapsed_tile: WaveTile):
 
 			var allowed_types: Array = possible_neighbors[dir]
 			var new_available_types: Array = neighbor_tile._available_types.filter(func(t): return t in allowed_types)
+			assert(not new_available_types.is_empty(), "pois eh... bora lidar com contradictions talvez?")
 
 			# If the neighbor's possibilities shrank, update it and add to queue
 			if new_available_types.size() < neighbor_tile._available_types.size():

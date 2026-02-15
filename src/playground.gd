@@ -7,7 +7,6 @@ extends Control
 @export var y_size: int
 
 @export var input = """
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 XXXXXXXXXXXXXXXXXXXXXXXXXXXXXBBBBBBBBBBBBBBBBBBXXXXXXX
 XXXXEEEEEEEEEXXXXXXXXXXXXXXBBBBBBBBBBBBBBBBBBBBBBXXXXX
 XXXXEOOOOOOOEXXXXXXXXXXXXBBBBBBBBBBBBBBBBBBBBBBBBBXXXX
@@ -15,7 +14,6 @@ XXXXEOOOOOOOEXXXXXXXXXXXBBBBBBBBBBBBBBBBBBBBBBBBBBXXXX
 XXXXEOOOOOOOEXXXXXXXXXXXXXXXBBBBBBBBBBBBBBBBBBBBBXXXXX
 XXXXEOOOOOOOEXXXXXXXXXXXXXXXXXXXXBBBBBBBBBBBBBBBXXXXXX
 XXXXEEEEEEEEEXXXXXXXXXXXXXXXXXXXXXXXXXXXBBBBXXXXXXXXXX
-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 """
 
 
@@ -37,7 +35,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed(&"ui_accept"):
 		wfc.initialize_grid()
 		wfc.run_to_the_end()
-	populate_grid_container(output_visual_grid)
+		populate_grid_container(output_visual_grid)
 
 
 # Helper: creates a label with common styling (border, alignment, expand flags)
@@ -45,7 +43,16 @@ func _create_styled_label(text: String, bg_color: Color) -> Label:
 	var label = Label.new()
 	label.text = text
 
-	# Make the label expand to fill the grid cell
+	# Usar monospace
+	var system_font = SystemFont.new()
+	system_font.font_names = ["Monospace"] # Fallback names
+	label.add_theme_font_override("font", system_font)
+	label.add_theme_font_size_override("font_size", 24)
+	label.add_theme_color_override("font_color", Color.BLACK)
+
+
+
+# Make the label expand to fill the grid cell
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -54,7 +61,7 @@ func _create_styled_label(text: String, bg_color: Color) -> Label:
 	# Build stylebox with common border settings
 	var style = StyleBoxFlat.new()
 	style.bg_color = bg_color
-	style.border_color = Color(1, 1, 1)        # white border
+	style.border_color = Color(0, 0, 0)        # white border
 	style.border_width_left = 1
 	style.border_width_top = 1
 	style.border_width_right = 1
@@ -80,7 +87,7 @@ func populate_grid_container(grid_container: GridContainer) -> void:
 			var text: String
 			var bg_color: Color
 
-			if wfc.is_finished():
+			if wfc.finished:
 				text = str(tile._available_types[0])
 				bg_color = string_to_color(text)
 			else:
@@ -89,7 +96,6 @@ func populate_grid_container(grid_container: GridContainer) -> void:
 
 			var label = _create_styled_label(text, bg_color)
 			grid_container.add_child(label)
-
 
 func populate_grid_with_matrix_of_strings(grid_container: GridContainer, matrix: Array) -> void:
 	# Remove any existing child controls to avoid duplicates

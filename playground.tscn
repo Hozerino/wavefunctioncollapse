@@ -10,7 +10,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rupst")
-x_size = 15
+x_size = 30
 y_size = 15
 
 [node name="OutputVisualGrid" type="GridContainer" parent="." unique_id=1381221631]
