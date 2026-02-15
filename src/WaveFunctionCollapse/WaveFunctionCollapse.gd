@@ -121,9 +121,7 @@ func update_tiles_after_collapse(collapsed_tile: WaveTile) -> bool:
 
 		for dir in possible_neighbors.keys():
 			var offset = dir_offsets.get(dir)
-			if offset == null:
-				push_error("Unknown direction: %s" % dir)
-				continue
+			assert(offset != null, "Unknown direction: %s" % dir)
 
 			var neighbor_pos = Vector2(current_tile.x, current_tile.y) + offset
 
@@ -138,6 +136,7 @@ func update_tiles_after_collapse(collapsed_tile: WaveTile) -> bool:
 			var new_available_types: Array = neighbor_tile._available_types.filter(func(t): return t in allowed_types)
 			# 🚨 CONTRADICTION DETECTED, returning false
 			if new_available_types.is_empty():
+				push_error("Contradiction detected at (%d, %d) when processing neighbor in direction %s" % [neighbor_tile.x, neighbor_tile.y, dir])
 				return false
 
 			if new_available_types.size() < neighbor_tile._available_types.size():
