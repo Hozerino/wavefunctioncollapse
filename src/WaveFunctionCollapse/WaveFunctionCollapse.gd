@@ -31,31 +31,8 @@ func run_iteration() -> bool:
 		return true
 	if not initialized:
 		initialize_grid()
-
-	var lowest_entropy_tile = _get_lowest_entropy_tile()
-
-	# Gather collapsed neighbors
-	var collapsed_neighbors = _get_collapsed_neighbors(lowest_entropy_tile)
-
-	# Define a weighting function based on neighbor counts
-	var freq = _ruleset_db.get_global_frequencies()  # compute once and cache for efficiency
-	var weight_func = func(type: String) -> float:
-		var weight = 1.0
-		# If any collapsed neighbors exist, multiply by the corresponding count
-		for dir in collapsed_neighbors:
-			var neighbor_type = collapsed_neighbors[dir]
-			var count = _ruleset_db.neighbor_counts_db[type][dir].get(neighbor_type, 0)
-			# Use (count + 1) for Laplace smoothing to avoid zero weights
-			weight *= (count + 1)
-		# If no collapsed neighbors, fall back to global frequency
-		if collapsed_neighbors.is_empty():
-			weight = freq.get(type, 1.0)
-		return weight
-
-	# Collapse using weights
-	lowest_entropy_tile.collapse_weighted(weight_func)
-	
-	# Propagate constraints as before
+	var lowest_entropy_tile := _get_lowest_entropy_tile()
+	lowest_entropy_tile.collapse()
 	update_tiles_after_collapse(lowest_entropy_tile)
 	return false
 
@@ -88,26 +65,6 @@ func _get_lowest_entropy_tile() -> WaveTile:
 	assert(min_entropy > 0, "tudo bem, so falta implementar esse caso de quando ja acabou")
 	assert(min_pos != null, "No valid tile found, all tiles are collapsed or have no options")
 	return grid[min_pos.y][min_pos.x]
-
-func _get_collapsed_neighbors(tile: WaveTile) -> Dictionary[String, String]:
-	"""Return a dictionary mapping direction names to the tile type of collapsed neighbors."""
-	var neighbors = {}
-	var dir_offsets: Dictionary = {
-		"north": Vector2.UP,
-		"south": Vector2.DOWN,
-		"west": Vector2.LEFT,
-		"east": Vector2.RIGHT
-  	}
-	for dir in dir_offsets:
-		var offset = dir_offsets[dir]
-		var nx = tile.x + offset.x
-		var ny = tile.y + offset.y
-		if nx < 0 or nx >= _x_size or ny < 0 or ny >= _y_size:
-			continue
-		var neighbor = grid[ny][nx]
-		if neighbor.entropy == 0:
-			neighbors[dir] = neighbor._available_types[0]
-	return neighbors	
 
 # This is the real WAVE FUNCTION COLLAPSE
 func update_tiles_after_collapse(collapsed_tile: WaveTile):
