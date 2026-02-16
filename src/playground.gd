@@ -36,14 +36,15 @@ var ruleset_db: TileRulesetDB = matrix_to_ruleset_processor.build_rules_db(input
 func _ready() -> void:
 	wfc.initialize_grid()
 	populate_grid_with_matrix_of_strings(input_visual_grid, matrix_to_ruleset_processor.get_input_matrix(input))
-	wfc.run_to_the_end()
 	populate_grid_container(output_visual_grid)
 
 
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed(&"ui_accept"):
-		wfc.initialize_grid()
+		wfc.run_iteration()
+		populate_grid_container(output_visual_grid)
+	if Input.is_action_pressed(&"ui_cancel"):
 		wfc.run_to_the_end()
 		populate_grid_container(output_visual_grid)
 
@@ -99,10 +100,9 @@ func populate_grid_container(grid_container: GridContainer) -> void:
 
 			if wfc.finished:
 				text = str(tile._available_types[0])
-				bg_color = string_to_color(text)
 			else:
 				text = str(tile.entropy)
-				bg_color = Color(0.2, 0.2, 0.2)
+			bg_color = string_to_color(text)
 
 			var label = _create_styled_label(text, bg_color)
 			grid_container.add_child(label)

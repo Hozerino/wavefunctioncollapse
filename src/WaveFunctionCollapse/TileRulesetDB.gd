@@ -4,37 +4,17 @@ class_name TileRulesetDB
 var possible_neighbors_db: Dictionary[String, Dictionary]
 var neighbor_counts_db: Dictionary
 
-# Pega a interseccao dos arrays
-func get_possible_neighbors(tile: WaveTile) -> Dictionary:
+# pega todos os tipos de tile que podem ser vizinhos do tile atual, considerando todas as possibilidades de colapso do tile atual
+func get_all_allowed_neighbor_types(tile: WaveTile) -> Dictionary:
 	var result: Dictionary = {}
-
-	if tile._available_types.is_empty():
-		return result
-
-	# Initialize with first candidate
-	var first_type: String = tile._available_types[0]
-	assert(possible_neighbors_db.has(first_type), "Type not in DB")
-
-	# Deep copy first constraints
-	for dir in possible_neighbors_db[first_type]:
-		result[dir] = possible_neighbors_db[first_type][dir].duplicate()
-
-	# Intersect with remaining candidates
-	for i in range(1, tile._available_types.size()):
-		var type_candidate: String = tile._available_types[i]
-		assert(possible_neighbors_db.has(type_candidate), "Type not in DB")
-
-		var candidate_data = possible_neighbors_db[type_candidate]
-
-		for dir in result.keys():
-			result[dir] = result[dir].filter(func(v):
-				return v in candidate_data.get(dir, [])
-			)
-
+	for dir in ["north", "south", "east", "west"]:
+		result[dir] = []
+		for tile_type in tile._available_types:
+			var possible_neighbors_in_dir = possible_neighbors_db.get(tile_type, {}).get(dir, [])
+			for neighbor_type in possible_neighbors_in_dir:
+				if neighbor_type not in result[dir]:
+					result[dir].append(neighbor_type)
 	return result
-
-func put_possible_neighbors(tile_type: String, constraints: Dictionary[String, Array]):
-	possible_neighbors_db[tile_type] = constraints
 
 func get_all_possible_tiles()-> Array[String]:
 	return possible_neighbors_db.keys()
@@ -54,3 +34,11 @@ func get_global_frequencies() -> Dictionary[String, float]:
 		# For now, we'll use the neighbor_counts_db as a proxy (it's approximate).
 		freq[tile_type] = total
 	return freq
+
+func is_valid_neighbor(direction: String, tile_type: String, origin_tile: WaveTile) -> bool:
+	assert(tile_type in possible_neighbors_db, "Tile type %s not in ruleset DB" % tile_type)
+
+	for neighbor_type in origin_tile._available_types:
+		if neighbor_type in possible_neighbors_db[tile_type].get(direction, []):
+			return true
+	return false
