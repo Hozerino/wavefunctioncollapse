@@ -41,10 +41,11 @@ func run_iteration() -> bool:
 	var original_types = lowest_entropy_tile._available_types.duplicate()
 
 	while original_types.size() > 0:
-		var chosen = original_types.pick_random()
-		original_types.erase(chosen)
+		var type_to_collapse = original_types.pick_random()
+#		var type_to_collapse = pick_random_with_weights(original_types, _ruleset_db.type_frequency_db)
+		original_types.erase(type_to_collapse)
 
-		lowest_entropy_tile.collapse(chosen)
+		lowest_entropy_tile.collapse(type_to_collapse)
 		var success: bool = propagate(lowest_entropy_tile)
 		if success:
 			return true
@@ -91,12 +92,6 @@ func _get_lowest_entropy_tiles(N: int) -> Array:
 	return lowest_entropy_tiles
 
 
-var opposite_dirs: Dictionary = {
-	"north": "south",
-	"south": "north",
-	"east": "west",
-	"west": "east"
-}
 func propagate(starting_tile) -> bool:
 	# Queue for propagation (BFS)
 	var tiles_to_be_updated: Array = [starting_tile]
@@ -112,7 +107,7 @@ func propagate(starting_tile) -> bool:
 			var types_that_neighbor_can_be = possible_neighbors[neighbor_dir]
 
 			# check if the neighbor can connect to the collapsed tile on the opposite direction
-				# if not, we have a contradiction
+			# if not, we have a contradiction
 			var neighbor_new_available_types: Array[String] = neighbor_tile._available_types.filter(func(neighbor_type_candidate):
 				return neighbor_type_candidate in types_that_neighbor_can_be
 			)
@@ -125,30 +120,19 @@ func propagate(starting_tile) -> bool:
 				neighbor_tile.update_available_types_and_entropy(neighbor_new_available_types)
 				tiles_to_be_updated.append(neighbor_tile)
 
-
-
-
-#	while not tiles_to_be_updated.is_empty():
-#		var current_tile: WaveTile = tiles_to_be_updated.pop_front()
-#
-#		var current_neighbors: Dictionary = current_tile.get_neighbors(grid)
-#		var new_available_types: Array[String] = current_tile._available_types.duplicate()
-#
-#		for neighbor_dir in current_neighbors.keys():
-#			var opposite_dirs: Dictionary = {
-#				"north": "south",
-#				"south": "north",
-#				"east": "west",
-#				"west": "east"
-#			}
-#			var neighbor_to_me_dir        = opposite_dirs[neighbor_dir]
-#			var neighbor_tile      = current_neighbors[neighbor_dir]
-#			new_available_types = new_available_types.filter(func(type_candidate):
-#				return _ruleset_db.is_valid_neighbor(neighbor_to_me_dir, type_candidate, neighbor_tile)
-#			)
-#
-#			current_tile.update_available_types_and_entropy(new_available_types)
-#			for neighbor_of_neighbor in current_tile.get_neighbors(grid).values():
-#				tiles_to_be_updated.append(neighbor_of_neighbor)
-
 	return true
+
+func pick_random_with_weights(list: Array, weights: Dictionary):
+	var total_weight: float = 0.0
+	for item in list:
+		total_weight += weights.get(item, 0.0)
+
+	var random_value: float = randf() * total_weight
+	var cumulative_weight: float = 0.0
+
+	for item in list:
+		cumulative_weight += weights.get(item, 1.0)
+		if random_value < cumulative_weight:
+			return item
+
+	return list[-1] # fallback
