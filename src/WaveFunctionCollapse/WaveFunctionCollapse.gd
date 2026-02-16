@@ -43,9 +43,9 @@ func run_iteration() -> bool:
 	while original_types.size() > 0:
 		var type_to_collapse = original_types.pick_random()
 #		var type_to_collapse = pick_random_with_weights(original_types, _ruleset_db.type_frequency_db)
-		original_types.erase(type_to_collapse)
 
 		lowest_entropy_tile.collapse(type_to_collapse)
+		original_types.erase(type_to_collapse)
 		var success: bool = propagate(lowest_entropy_tile)
 		if success:
 			return true

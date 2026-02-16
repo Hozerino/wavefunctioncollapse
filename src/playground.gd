@@ -57,7 +57,7 @@ extends Control
 #XXXXXXXXXXXXXXXXX
 
 
-var matrix_to_ruleset_processor: MatrixToRulesetProcessor = MatrixToRulesetProcessor.new()
+var matrix_to_ruleset_processor: PatternMatrixToRulesetProcessor = PatternMatrixToRulesetProcessor.new()
 var ruleset_db: TileRulesetDB = matrix_to_ruleset_processor.build_rules_db(get_input_as_matrix(input))
 
 @onready var wfc :WaveFunctionCollapse = WaveFunctionCollapse.new(ruleset_db, x_size, y_size)
@@ -114,14 +114,16 @@ func _create_styled_label(text: String, bg_color: Color) -> Label:
 
 
 func populate_grid_container(grid_container: GridContainer) -> void:
-	# Remove any existing child controls to avoid duplicates
 	for child in grid_container.get_children():
 		child.queue_free()
 
-	# Set the number of columns to match the grid's width
+	if wfc.finished and matrix_to_ruleset_processor.pattern_size > 1:
+		var expanded = get_1x1_matrix(wfc.grid, matrix_to_ruleset_processor.pattern_size)
+		populate_grid_with_matrix_of_strings(grid_container, expanded)
+		return
+
 	grid_container.columns = x_size
 
-	# Create a Label for each cell
 	for y in range(0, y_size):
 		for x in range(0, x_size):
 			var tile: WaveTile = wfc.grid[y][x]
@@ -132,8 +134,8 @@ func populate_grid_container(grid_container: GridContainer) -> void:
 				text = str(tile._available_types[0])
 			else:
 				text = str(tile.entropy)
-			bg_color = string_to_color(text)
 
+			bg_color = string_to_color(text)
 			var label = _create_styled_label(text, bg_color)
 			grid_container.add_child(label)
 
@@ -187,3 +189,21 @@ func get_input_as_matrix(input: String) -> Array:
 
 		input_as_matrix.append(row)
 	return input_as_matrix
+
+# TODO algum matrix utils da vida?
+func get_1x1_matrix(grid: Array, pattern_size: int) -> Array:
+	var output: Array = []
+
+	for y in range(grid.size()):
+		for dy in range(pattern_size):
+			var row: Array = []
+			for x in range(grid[0].size()):
+				var pattern_key: String      = grid[y][x]._available_types[0]
+				var split: PackedStringArray = pattern_key.split("|")
+				var pattern_row: String      = split[dy]
+
+				for char in pattern_row:
+					row.append(char)
+			output.append(row)
+
+	return output
