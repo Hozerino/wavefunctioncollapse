@@ -7,30 +7,36 @@ extends Control
 @export var y_size: int
 
 @export var input = """
-###################################################
-#########################################sssssss###
-############################cccccccccccccsssssss###
-############################c############sssssss###
-#####ssssssssss#############c############ssss######
-#####sssssssssscccccccccccccc############ssss######
-#####ssssssssss#########c################ssss######
-########################c##########################
-########################c##########################
-########################c##########################
-########################c##########################
-########################c##########################
-########################c##########################
-########################c##########################
-######################sssss########################
-######################sssss########################
-######################sssss########################
-######################sssss########################
-######################sssss########################
-###################################################
-###################################################
-###################################################
-###################################################
-###################################################
+############################################################
+############################################################
+###############################################sssssss######
+##################################cccccccccccccsssssss######
+##################################c############sssssss######
+###########ssssssssss#############c############ssss#########
+###########sssssssssscccccccccccccc############ssss#########
+###########ssssssssss#########c################ssss#########
+##############################c#############################
+##############################c#############################
+##############################c#############################
+#############cccccccccccccccccc#############################
+#############c################c#############################
+#############c################c#############################
+#############c################c#############################
+#############cc#############sssss###########################
+##############c#############sssss###########################
+##############c#############sssss###########################
+##############c#############sssss###########################
+#############TcT############sssss###########################
+##########TTTzzTTTT#########################################
+##########TzzzzzzzTT########################################
+#########TTzzzzzzzzT########################################
+#########TzzzzzzzzzTT#######################################
+#########TzzzzzzzzzTT#######################################
+#########TzzzzzzzzzT########################################
+#########TTzzzzzzzTT########################################
+##########TTTTTTTTT#########################################
+############################################################
+############################################################
 """
 #XXXXXXXXXXXXXXXXX
 #XXXXEEEEEEEEEXXXX
@@ -78,33 +84,33 @@ func _create_styled_label(text: String, bg_color: Color) -> Label:
 	var label = Label.new()
 	label.text = text
 
-	# Usar monospace
 	var system_font = SystemFont.new()
-	system_font.font_names = ["Monospace"] # Fallback names
+	system_font.font_names = ["Monospace"]
 	label.add_theme_font_override("font", system_font)
 	label.add_theme_font_size_override("font_size", 24)
 	label.add_theme_color_override("font_color", Color.BLACK)
 
+	# Make square
+	var cell_size := 32  # <- change this value if you want bigger/smaller tiles
+	label.custom_minimum_size = Vector2(cell_size, cell_size)
 
-
-# Make the label expand to fill the grid cell
 	label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	label.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 
-	# Build stylebox with common border settings
 	var style = StyleBoxFlat.new()
 	style.bg_color = bg_color
-	style.border_color = Color(0, 0, 0)        # white border
+	style.border_color = Color(0, 0, 0)
 	style.border_width_left = 1
 	style.border_width_top = 1
 	style.border_width_right = 1
 	style.border_width_bottom = 1
-	style.set_corner_radius_all(2)             # slight rounding (optional)
+	style.set_corner_radius_all(2)
 
 	label.add_theme_stylebox_override("normal", style)
 	return label
+
 
 
 func populate_grid_container(grid_container: GridContainer) -> void:
@@ -210,4 +216,3 @@ func get_1x1_matrix(grid: Array, pattern_size: int) -> Array:
 					output[y + dy][x + dx] = split[dy][dx]
 
 	return output
-

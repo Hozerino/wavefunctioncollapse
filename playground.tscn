@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cchbrpo3ipsgq"]
 
 [ext_resource type="Script" uid="uid://x7ahw3b0lw8y" path="res://src/playground.gd" id="1_rupst"]
+[ext_resource type="Script" uid="uid://1tvs7t6ovypd" path="res://movable_camera2d.gd" id="2_wt17y"]
 
 [node name="Playground" type="Control" unique_id=1005479856]
 layout_mode = 3
@@ -11,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_rupst")
 x_size = 30
-y_size = 15
+y_size = 30
 
 [node name="OutputVisualGrid" type="GridContainer" parent="." unique_id=1381221631]
 layout_mode = 1
@@ -360,3 +361,7 @@ text = "W"
 [node name="Label40" type="Label" parent="InputVisualGrid" unique_id=1214208060]
 layout_mode = 2
 text = "W"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=521542478]
+position = Vector2(575, 326)
+script = ExtResource("2_wt17y")
